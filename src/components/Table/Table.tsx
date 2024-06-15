@@ -8,7 +8,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
     null
   );
   const [sortType, setSortType] = useState<"asc" | "desc" | null>(null);
-  
+
   const [originalData, setOriginalData] = useState<Order[] | OrderItem[]>(
     () => {
       if (isOrderList) {

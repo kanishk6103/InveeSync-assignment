@@ -118,12 +118,12 @@ const Inevntory = () => {
         </div>
         <div className="font-bold text-2xl">Inventory</div>
       </div>
-      <div className="m-10 my-5 w-full px-24">
-        <div className="flex justify-between items-center pr-20">
+      <div className="m-10 my-5 w-full md:px-24">
+        <div className="flex md:flex-row flex-col justify-between items-center pr-20">
           <div className="mx-6 my-8">
             <Search handleSearch={handleSearch} Order={false} />
           </div>
-          <div className="flex gap-3">
+          <div className="flex gap-3 mb-5 md:mb-0">
             <FilterButton
               currentFilter={filter}
               filterType="All"

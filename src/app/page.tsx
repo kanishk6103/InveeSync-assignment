@@ -42,11 +42,11 @@ const Home = () => {
         </div>
       </div>
       {/* Filter Buttons */}
-      <div className="flex w-full my-5 px-40 justify-between items-center">
+      <div className="flex flex-col md:flex-row md:gap-5 w-full my-5 px-40 justify-between items-center">
         <div>
           <Search handleSearch={handleSearch} Order={true} />
         </div>
-        <div className="flex gap-5 items-center">
+        <div className="flex gap-5 items-center my-5 md:my-0">
           {buttonList.map((singleButton, index) => {
             return (
               <FilterButton

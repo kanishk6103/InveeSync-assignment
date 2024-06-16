@@ -59,7 +59,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="overflow-x-auto w-full px-36">
+    <div className="overflow-x-auto w-full md:px-36">
       <table className="w-full text-sm text-left rtl:text-right text-gray-700">
         <thead className="text-xs text-gray-900 uppercase bg-gray-5">
           <tr>
@@ -114,7 +114,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
               })}
         </tbody>
       </table>
-      <div className="flex justify-between items-center p-4 w-1/3 m-auto">
+      <div className="flex justify-between items-center p-4 w-full lg:w-1/3 m-auto">
         <button
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}

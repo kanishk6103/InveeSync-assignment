@@ -6,7 +6,7 @@ import { headings } from "./contants";
 import EditableRow from "./EditableRow";
 import Link from "next/link";
 import Search from "@/components/Search";
-
+import FilterButton from "@/components/Table/FilterButton";
 const Inevntory = () => {
   const [newItem, setNewItem] = useState<ItemType>({
     id: data.items.length + 1,
@@ -17,6 +17,7 @@ const Inevntory = () => {
   const [searchFilteredData, setSearchFilteredData] = useState<
     ItemType[] | null
   >(null);
+  const [filter, setFilter] = useState<string>("All");
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setSearchFilteredData(null);
@@ -77,7 +78,7 @@ const Inevntory = () => {
       data.items = data.items.map((item) =>
         item.id === updatedItem.id ? updatedItem : item
       );
-      console.log(data.items);
+      // console.log(data.items);
       setItems(data.items);
     }
   };
@@ -95,6 +96,20 @@ const Inevntory = () => {
     );
   };
 
+  const handleFilterChange = (filterType: string) => {
+    setFilter(filterType);
+    setSearchFilteredData(null);
+  };
+
+  const filteredItems = items.filter((item) => {
+    if (filter === "In stock") {
+      return item.stock > 0;
+    } else if (filter === "Out of stock") {
+      return item.stock === 0;
+    }
+    return true;
+  });
+
   return (
     <div className="m-5 flex flex-col gap-5">
       <div className="flex gap-10">
@@ -104,8 +119,27 @@ const Inevntory = () => {
         <div className="font-bold text-2xl">Inventory</div>
       </div>
       <div className="m-10 my-5 w-full px-24">
-        <div className="mx-6 my-8">
-          <Search handleSearch={handleSearch} Order={false} />
+        <div className="flex justify-between items-center pr-20">
+          <div className="mx-6 my-8">
+            <Search handleSearch={handleSearch} Order={false} />
+          </div>
+          <div className="flex gap-3">
+            <FilterButton
+              currentFilter={filter}
+              filterType="All"
+              handler={() => handleFilterChange("All")}
+            />
+            <FilterButton
+              currentFilter={filter}
+              filterType="In stock"
+              handler={() => handleFilterChange("In stock")}
+            />
+            <FilterButton
+              currentFilter={filter}
+              filterType="Out of stock"
+              handler={() => handleFilterChange("Out of stock")}
+            />
+          </div>
         </div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-700">
           <thead className="text-xs text-gray-900 uppercase bg-gray-5">
@@ -122,7 +156,7 @@ const Inevntory = () => {
             </tr>
           </thead>
           <tbody>
-            {(searchFilteredData ?? items).map((singleItem) => (
+            {(searchFilteredData ?? filteredItems).map((singleItem) => (
               <EditableRow
                 item={singleItem}
                 onSave={handleItemSave}

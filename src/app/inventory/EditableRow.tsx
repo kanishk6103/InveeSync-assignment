@@ -43,6 +43,7 @@ const EditableRow: React.FC<EditableRowProps> = ({
             <input
               type="text"
               value={tempName}
+              className="border-b outline-none"
               onChange={(e) => setTempName(e.target.value)}
             />
           </td>
@@ -50,6 +51,7 @@ const EditableRow: React.FC<EditableRowProps> = ({
             <input
               type="number"
               value={tempStock}
+              className="border-b outline-none"
               onChange={(e) => setTempStock(Number(e.target.value))}
             />
           </td>

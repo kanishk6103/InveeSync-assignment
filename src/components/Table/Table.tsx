@@ -59,7 +59,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="overflow-x-auto w-full">
+    <div className="overflow-x-auto w-full px-36">
       <table className="w-full text-sm text-left rtl:text-right text-gray-700">
         <thead className="text-xs text-gray-900 uppercase bg-gray-5">
           <tr>

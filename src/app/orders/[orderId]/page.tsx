@@ -6,7 +6,7 @@ import Table from "@/components/Table/Table";
 import { ItemType, Order, OrderItem } from "@/app/types";
 import { useEffect, useState } from "react";
 import { Router } from "next/router";
-const page = () => {
+const OrderDetails = () => {
   const params = useParams();
   const { orderId } = params;
   const router = useRouter();
@@ -85,4 +85,4 @@ const page = () => {
   );
 };
 
-export default page;
+export default OrderDetails;

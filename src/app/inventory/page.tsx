@@ -7,7 +7,7 @@ import EditableRow from "./EditableRow";
 import Link from "next/link";
 import Search from "@/components/Search";
 
-const Page = () => {
+const Inevntory = () => {
   const [newItem, setNewItem] = useState<ItemType>({
     id: data.items.length + 1,
     name: "",
@@ -165,4 +165,4 @@ const Page = () => {
   );
 };
 
-export default Page;
+export default Inevntory;

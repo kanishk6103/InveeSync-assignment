@@ -8,7 +8,7 @@ const FilterButton = ({
     <button
       className={
         "py-1 px-3 bg-gray-200 rounded-md " +
-        (currentFilter === filterType ? "bg-blue-500 text-white" : "")
+        (currentFilter === filterType ? "bg-blue-300 text-white" : "")
       }
       onClick={handler}
     >

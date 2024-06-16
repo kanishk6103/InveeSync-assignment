@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ItemType } from "../types";
 import { headings } from "./contants";
 import EditableRow from "./EditableRow";
+import { useRouter } from "next/navigation";
 
 const Page = () => {
   const [newItem, setNewItem] = useState<ItemType>({
@@ -12,7 +13,7 @@ const Page = () => {
     stock: 0,
   });
   const [items, setItems] = useState<ItemType[]>(data.items);
-
+  const router = useRouter();
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const duplicate = items.some(
@@ -76,7 +77,16 @@ const Page = () => {
   console.log(data.items);
   return (
     <div className="m-5 flex flex-col gap-5">
-      <div className="text-2xl font-bold">Welcome to the inventory</div>
+      <div className="flex gap-5 items-end px-6">
+        <button
+          onClick={() => {
+            router.back();
+          }}
+        >
+          Back
+        </button>
+        <div className="text-2xl font-bold">Welcome to the inventory</div>
+      </div>
       <div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-700">
           <thead className="text-xs text-gray-900 uppercase bg-gray-5">

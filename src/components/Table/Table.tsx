@@ -28,7 +28,11 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
   }, [originalData, sortedArray]);
 
   const handleSort = (col: string, order: "asc" | "desc" | null) => {
-    const arraySorted = sortColumn(originalData, col, order);
+    const arraySorted = sortColumn(
+      isOrderList ? (data as Order[]) : (data as Order).items,
+      col,
+      order
+    );
     if (sortType === null) {
       setSortedArray(arraySorted);
       setSortType("asc");
@@ -48,15 +52,14 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
 
   const indexOfLastItem = currentPage * itemsPerPage;
   const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentData = (sortedArray ?? originalData).slice(
-    indexOfFirstItem,
-    indexOfLastItem
-  );
+  const currentData = (
+    sortedArray ?? (isOrderList ? (data as Order[]) : (data as Order).items)
+  ).slice(indexOfFirstItem, indexOfLastItem);
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
-    <div className="relative overflow-x-auto w-[50vw]">
+    <div className="overflow-x-auto w-full">
       <table className="w-full text-sm text-left rtl:text-right text-gray-700">
         <thead className="text-xs text-gray-900 uppercase bg-gray-5">
           <tr>
@@ -101,7 +104,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
                 });
                 const stock = itemStock[0].stock;
                 return (
-                  <tr className="bg-white border-b cursor-pointer" key={id}>
+                  <tr className="bg-white border-b" key={id}>
                     <td className="p-6">{id}</td>
                     <td className="p-6">{name}</td>
                     <td className="p-6">{quantity}</td>
@@ -111,7 +114,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
               })}
         </tbody>
       </table>
-      <div className="flex justify-between items-center p-4 w-full">
+      <div className="flex justify-between items-center p-4 w-1/3 m-auto">
         <button
           onClick={() => paginate(currentPage - 1)}
           disabled={currentPage === 1}
@@ -122,7 +125,13 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
         <span>Page {currentPage}</span>
         <button
           onClick={() => paginate(currentPage + 1)}
-          disabled={indexOfLastItem >= (sortedArray ?? originalData).length}
+          disabled={
+            indexOfLastItem >=
+            (
+              sortedArray ??
+              (isOrderList ? (data as Order[]) : (data as Order).items)
+            ).length
+          }
           className="px-4 py-1 bg-gray-300 rounded disabled:opacity-50"
         >
           Next

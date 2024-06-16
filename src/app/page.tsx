@@ -18,13 +18,16 @@ const Home = () => {
     setSearchFilteredData(null);
   };
 
+  // Filter data based on the "filter" state variable, if the variable is set to "All" then all the orders will be displayed otherwise the status
+  // will be matched to the filter to filter the objects
   let filteredData =
     filter === "All"
       ? OrderList.orders
       : OrderList.orders.filter((order) => order.status === filter);
 
+  // filter items that include the search term, compared .lowercase to compare all cases
   const handleSearch = (searchTerm: string) => {
-    console.log(searchTerm);
+    // console.log(searchTerm);
     setSearchFilteredData(
       OrderList.orders.filter((singleOrder) => {
         return singleOrder.customer
@@ -41,7 +44,7 @@ const Home = () => {
           <Link href={`/inventory`}>Inventory</Link>
         </div>
       </div>
-      {/* Filter Buttons */}
+      {/* Filter Buttons and Search component */}
       <div className="flex flex-col md:flex-row md:gap-5 w-full my-5 px-40 justify-between items-center">
         <div>
           <Search handleSearch={handleSearch} Order={true} />
@@ -59,6 +62,8 @@ const Home = () => {
           })}
         </div>
       </div>
+      {/* Table component that takes all the column headings as an array, the data that is to be filled in, and a variable "isOrderList" to tell
+      If this is a order list or an item list, and sending the array of items seperately from data */}
       <Table
         headings={orderHeadings}
         data={searchFilteredData ?? filteredData}

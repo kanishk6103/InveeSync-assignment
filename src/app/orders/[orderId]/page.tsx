@@ -22,6 +22,8 @@ const OrderDetails = () => {
   }, [orderId]);
 
   const items: OrderItem[] | null = order ? order.items : null;
+
+  // When "Mark as complete" is clicked, we check if the order is not already complete, if not, we set it to complete
   const handleClick = () => {
     if (order && order.status !== "Completed") {
       order.status = "Completed";
@@ -29,6 +31,8 @@ const OrderDetails = () => {
       setStatus("Completed"); // Trigger re-render
     }
   };
+
+  // When "Mark as Pending" is clicked, we check if the order is not already pending, if not, we set it to pending
   const handleMarkPending = () => {
     if (order && order.status !== "Pending") {
       order.status = "Pending";
@@ -44,10 +48,12 @@ const OrderDetails = () => {
   return (
     <div className="m-10">
       <div>
+        {/* A simple back button */}
         <div className="cursor-pointer" onClick={() => router.back()}>
           Back
         </div>
         <div className="m-5 text-2xl font-bold">
+          {/* Basic order Info */}
           {order.id} : {order.customer} ordered {order.items.length} items
         </div>
       </div>
@@ -57,6 +63,7 @@ const OrderDetails = () => {
         isOrderList={false}
         ItemList={data.items}
       />
+      {/* Mark as complete and mark as pending buttons */}
       <div className="flex gap-5">
         <button
           className={

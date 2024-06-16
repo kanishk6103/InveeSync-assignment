@@ -4,6 +4,7 @@ const FilterButton = ({
   filterType,
   handler,
 }: FilterButtonProps) => {
+  // Simple button which performs whatever is passed to it
   return (
     <button
       className={

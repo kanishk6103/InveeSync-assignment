@@ -21,7 +21,9 @@ const Inevntory = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     setSearchFilteredData(null);
+    // prevents the page from refreshing
     e.preventDefault();
+    // checking for duplicates, if an item with same name exists already then don't add it.
     const duplicate = items.some(
       (singleItem) =>
         singleItem.name.toLowerCase() === newItem.name.toLowerCase()
@@ -35,11 +37,13 @@ const Inevntory = () => {
       alert("Item already exists, kindly edit the existing item");
       return;
     } else {
+      // if no duplicate exists
       const itemToAdd: ItemType = {
         id: items.length + 1,
         name: newItem.name,
         stock: parseInt(newItem.stock.toString()),
       };
+      // add a new item
       setItems((prevItems) => [...prevItems, itemToAdd]);
       data.items = [...data.items, itemToAdd];
       setNewItem({
@@ -50,6 +54,7 @@ const Inevntory = () => {
     }
   };
 
+  // Handle input change when adding a new item to the items list
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchFilteredData(null);
     const { name, value } = e.target;
@@ -59,14 +64,17 @@ const Inevntory = () => {
     }));
   };
 
+  // filtering all the items that don't match the item id and then setting those to items state variable to map over them
   const handleItemDelete = (id: number) => {
     setSearchFilteredData(null);
     data.items = data.items.filter((singleItem) => singleItem.id !== id);
     setItems(data.items);
   };
 
+  // When saving the item after editing it
   const handleItemSave = (updatedItem: ItemType) => {
     setSearchFilteredData(null);
+    // check for duplicate again, if a duplicate exists, don't add the name
     const duplicate = items.some(
       (singleItem) =>
         singleItem.name.toLowerCase() === updatedItem.name.toLowerCase()
@@ -75,18 +83,22 @@ const Inevntory = () => {
       alert("Item already exists, kindly edit the existing item");
       return;
     } else {
+      // Replace the item with the old item with the new item
       data.items = data.items.map((item) =>
         item.id === updatedItem.id ? updatedItem : item
       );
       // console.log(data.items);
+      // set the updated data.items to the items state variable for a re-render
       setItems(data.items);
     }
   };
 
   const handleCancel = () => {};
   // console.log(data.items);
+
+  // handles search by filtering the items that match the search term and store it in searchFilteredData
   const handleSearch = (searchTerm: string) => {
-    console.log(searchTerm);
+    // console.log(searchTerm);
     setSearchFilteredData(
       items.filter((singleOrder) => {
         return singleOrder.name
@@ -96,11 +108,14 @@ const Inevntory = () => {
     );
   };
 
+  // sets the filter type
   const handleFilterChange = (filterType: string) => {
     setFilter(filterType);
     setSearchFilteredData(null);
   };
 
+  // filters based on the stock, if filter is set to "In Stock", all items with stock value more than 0 will be displayed
+  // otherwise all items with no stock will be displayed
   const filteredItems = items.filter((item) => {
     if (filter === "In stock") {
       return item.stock > 0;
@@ -110,10 +125,14 @@ const Inevntory = () => {
     return true;
   });
 
+  // Button headings for filter buttons
+  const buttonHeadings = ["All", "In Stock", "Out of Stock"];
+
   return (
     <div className="m-5 flex flex-col gap-5">
       <div className="flex gap-10">
         <div className="font-light text-2xl">
+          {/* Links to the orders page */}
           <Link href={`/`}>Orders</Link>
         </div>
         <div className="font-bold text-2xl">Inventory</div>
@@ -121,24 +140,20 @@ const Inevntory = () => {
       <div className="m-10 my-5 w-full md:px-24">
         <div className="flex md:flex-row flex-col justify-between items-center pr-20">
           <div className="mx-6 my-8">
+            {/* Reused search component */}
             <Search handleSearch={handleSearch} Order={false} />
           </div>
           <div className="flex gap-3 mb-5 md:mb-0">
-            <FilterButton
-              currentFilter={filter}
-              filterType="All"
-              handler={() => handleFilterChange("All")}
-            />
-            <FilterButton
-              currentFilter={filter}
-              filterType="In stock"
-              handler={() => handleFilterChange("In stock")}
-            />
-            <FilterButton
-              currentFilter={filter}
-              filterType="Out of stock"
-              handler={() => handleFilterChange("Out of stock")}
-            />
+            {buttonHeadings.map((singleHeading, Index) => {
+              return (
+                <FilterButton
+                  currentFilter={filter}
+                  filterType={singleHeading}
+                  handler={() => handleFilterChange(singleHeading)}
+                  key={Index}
+                />
+              );
+            })}
           </div>
         </div>
         <table className="w-full text-sm text-left rtl:text-right text-gray-700">
@@ -156,6 +171,7 @@ const Inevntory = () => {
             </tr>
           </thead>
           <tbody>
+            {/* An editable row component to make the code tidy */}
             {(searchFilteredData ?? filteredItems).map((singleItem) => (
               <EditableRow
                 item={singleItem}
@@ -169,6 +185,7 @@ const Inevntory = () => {
         </table>
         {/* Form */}
         <div className="m-5">
+          {/* Input form to add a new item */}
           <form className="flex gap-5" onSubmit={handleSubmit}>
             <input
               type="text"

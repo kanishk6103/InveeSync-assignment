@@ -8,6 +8,8 @@ const Search = ({
   Order: boolean;
 }) => {
   const [searchTerm, setSearchTerm] = useState<string>("");
+  // A very basic component which doesn't do anything by itself but fetches the search term and sends it to the function handleSearch on parent
+  // page, where the logic is done and the data is mapped accordingly.
   return (
     <div className="flex gap-5">
       <input

@@ -1,17 +1,53 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Table from "@/components/Table/Table";
 import { orderHeadings, buttonList } from "@/components/Table/constants";
 import OrderList from "@/api/data.json";
 import FilterButton from "@/components/Table/FilterButton";
 import Link from "next/link";
 import Search from "@/components/Search";
-import { Order } from "./types";
-const Home = () => {
+import { fetchInitialData } from "@/components/utils/fetchData";
+import { ItemType, Order } from "./types";
+import { GetStaticProps } from "next";
+import {
+  loadFromLocalStorage,
+  saveToLocal,
+} from "@/components/utils/localStorage";
+
+interface HomeProps {
+  initialData: {
+    orders: Order[];
+    items: ItemType[];
+  };
+}
+const Home: React.FC<HomeProps> = () => {
+  const [orders, setOrders] = useState<Order[]>([]);
+  const [items, setItems] = useState<ItemType[]>([]);
   const [filter, setFilter] = useState<string>("All");
   const [searchFilteredData, setSearchFilteredData] = useState<Order[] | null>(
     null
   );
+  const initialData = async () => {
+    const data = await fetchInitialData();
+    setOrders(data.orders);
+    setItems(data.items);
+  };
+
+  useEffect(() => {
+    initialData();
+  }, []);
+
+  useEffect(() => {
+    const storedData = loadFromLocalStorage<{
+      orders: Order[];
+      items: ItemType[];
+    }>("appData");
+    if (storedData) {
+      setOrders(storedData.orders);
+      setItems(storedData.items);
+    }
+    console.log(storedData);
+  }, []);
 
   const handleClick = (type: string) => {
     setFilter(type);

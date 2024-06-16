@@ -8,7 +8,8 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
     null
   );
   const [sortType, setSortType] = useState<"asc" | "desc" | null>(null);
-
+  const [currentPage, setCurrentPage] = useState<number>(1);
+  const itemsPerPage = 5;
   const [originalData, setOriginalData] = useState<Order[] | OrderItem[]>(
     () => {
       if (isOrderList) {
@@ -38,11 +39,21 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
       setSortType(null);
       setSortedArray(null);
     }
+    setCurrentPage(1);
   };
 
   const handleRowClick = (id: number) => {
     router.push(`/orders/${id}`);
   };
+
+  const indexOfLastItem = currentPage * itemsPerPage;
+  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
+  const currentData = (sortedArray ?? originalData).slice(
+    indexOfFirstItem,
+    indexOfLastItem
+  );
+
+  const paginate = (pageNumber: number) => setCurrentPage(pageNumber);
 
   return (
     <div className="relative overflow-x-auto w-[50vw]">
@@ -50,7 +61,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
         <thead className="text-xs text-gray-900 uppercase bg-gray-5">
           <tr>
             {headings.map((singleHeading, index) => {
-              console.log(singleHeading.col);
+              // console.log(singleHeading.col);
               return (
                 <th
                   scope="col"
@@ -66,7 +77,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
         </thead>
         <tbody>
           {isOrderList
-            ? (sortedArray ?? (data as Order[])).map((singleItem) => {
+            ? currentData.map((singleItem) => {
                 const { id, customer, status, items } = singleItem as Order;
                 return (
                   <tr
@@ -83,12 +94,7 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
                   </tr>
                 );
               })
-            : (
-                sortedArray ??
-                ((Array.isArray(data)
-                  ? data.flatMap((order) => order.items)
-                  : data.items) as OrderItem[])
-              ).map((singleItem) => {
+            : currentData.map((singleItem) => {
                 const { id, name, quantity } = singleItem as OrderItem;
                 const itemStock: ItemType[] = ItemList.filter((e: ItemType) => {
                   return e.id == singleItem.id;
@@ -105,6 +111,23 @@ const Table = ({ headings, data, isOrderList, ItemList }: TableProps) => {
               })}
         </tbody>
       </table>
+      <div className="flex justify-between items-center p-4 w-full">
+        <button
+          onClick={() => paginate(currentPage - 1)}
+          disabled={currentPage === 1}
+          className="px-4 py-1 bg-gray-300 rounded disabled:opacity-50"
+        >
+          Previous
+        </button>
+        <span>Page {currentPage}</span>
+        <button
+          onClick={() => paginate(currentPage + 1)}
+          disabled={indexOfLastItem >= (sortedArray ?? originalData).length}
+          className="px-4 py-1 bg-gray-300 rounded disabled:opacity-50"
+        >
+          Next
+        </button>
+      </div>
     </div>
   );
 };

@@ -126,7 +126,7 @@ const Inevntory = () => {
   });
 
   // Button headings for filter buttons
-  const buttonHeadings = ["All", "In Stock", "Out of Stock"];
+  const buttonHeadings = ["All", "In stock", "Out of stock"];
 
   return (
     <div className="m-5 flex flex-col gap-5">

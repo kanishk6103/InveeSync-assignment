@@ -77,7 +77,8 @@ const Inevntory = () => {
     // check for duplicate again, if a duplicate exists, don't add the name
     const duplicate = items.some(
       (singleItem) =>
-        singleItem.name.toLowerCase() === updatedItem.name.toLowerCase()
+        singleItem.name.toLowerCase() === updatedItem.name.toLowerCase() &&
+        singleItem.id !== updatedItem.id
     );
     if (duplicate) {
       alert("Item already exists, kindly edit the existing item");
